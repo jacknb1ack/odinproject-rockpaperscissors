@@ -36,47 +36,63 @@ function announceResult(string, humanChoice, computerChoice) {
   }
 }
 
-function playRound(humanChoice, computerChoice) {
-  humanChoice = getHumanChoice().toLowerCase();
-  computerChoice = getComputerChoice();
-  let result;
+// mark the score and keep it tracked whether user win or computer win
 
-  if (humanChoice === "rock") {
-    if (computerChoice === "scissor") {
-      result = "win";
-      humanScore = humanScore + 1;
-    } else if (computerChoice === "paper") {
-      result = "lose";
-      computerScore = computerScore + 1;
+// announce whether user win or lose
+
+function playGame() {
+  let humanScore = 0;
+  let computerScore = 0;
+
+  function playRound(humanChoice, computerChoice) {
+    humanChoice = getHumanChoice().toLowerCase();
+    computerChoice = getComputerChoice();
+    let result;
+
+    if (humanChoice === "rock") {
+      if (computerChoice === "scissor") {
+        result = "win";
+        humanScore = humanScore + 1;
+      } else if (computerChoice === "paper") {
+        result = "lose";
+        computerScore = computerScore + 1;
+      } else {
+        result = "draw";
+      }
+    } else if (humanChoice === "paper") {
+      if (computerChoice === "rock") {
+        result = "win";
+        humanScore = humanScore + 1;
+      } else if (computerChoice === "scissor") {
+        result = "lose";
+        computerScore = computerScore + 1;
+      } else {
+        result = "draw";
+      }
     } else {
-      result = "draw";
+      if (computerChoice === "paper") {
+        result = "win";
+        humanScore = humanScore + 1;
+      } else if (computerChoice === "rock") {
+        result = "lose";
+        computerScore = computerScore + 1;
+      } else {
+        result = "draw";
+      }
     }
-  } else if (humanChoice === "paper") {
-    if (computerChoice === "rock") {
-      result = "win";
-      humanScore = humanScore + 1;
-    } else if (computerChoice === "scissor") {
-      result = "lose";
-      computerScore = computerScore + 1;
-    } else {
-      result = "draw";
-    }
-  } else {
-    if (computerChoice === "paper") {
-      result = "win";
-      humanScore = humanScore + 1;
-    } else if (computerChoice === "rock") {
-      result = "lose";
-      computerScore = computerScore + 1;
-    } else {
-      result = "draw";
-    }
+
+    return announceResult(result, humanChoice, computerChoice);
   }
 
-  return announceResult(result, humanChoice, computerChoice);
+  for (let i = 0; i < 5; i++) {
+    playRound();
+  }
+
+  if (humanScore > computerScore) {
+    console.log("The winner is Human Player with total score of " + humanScore);
+  } else {
+    console.log("The winner is Computer Player with total score of " + computerScore);
+  }
 }
-// mark the score and keep it tracked whether user win or computer win
-let humanScore = 0;
-let computerScore = 0;
-// announce whether user win or lose
-playRound();
+
+playGame();
