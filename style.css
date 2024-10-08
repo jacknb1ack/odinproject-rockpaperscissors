@@ -6,6 +6,14 @@ body {
   padding: 0;
 }
 
+button {
+  padding: 30px 40px;
+  border: 0px;
+  background-color: rgb(99, 114, 128);
+  color: wheat;
+  font-size: 20px;
+  font-weight: 700;
+}
 #announce {
   padding: 15px 0;
 }

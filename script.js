@@ -12,6 +12,13 @@ function getComputerChoice() {
   }
 }
 
+//store user and computer score
+let userScore = 0;
+let compScore = 0;
+
+//placeholder for announcement
+const announceWinner = document.querySelector("#announce");
+
 // play 1 round, compare userchoice and compchoice and check
 // the result whether user win, lose or draw
 let rock = document.querySelector("#rock");
@@ -29,27 +36,29 @@ scissor.addEventListener("click", () => {
   playRound("scissor");
 });
 
-let userScore = 0;
-let compScore = 0;
-
 function playRound(userChoice) {
   let compChoice = getComputerChoice();
 
   let result;
-  if ((userChoice === "rock" && compChoice === "scissor") || (userChoice === "paper" && compChoice === "rock") || (userChoice === "scissor" && compChoice === "paper")) {
-    userScore++;
-    result = "win";
-  } else if (userChoice == compChoice) {
-    result = "draw";
+
+  if (compScore == 5 || userScore == 5) {
+    reset();
   } else {
-    compScore++;
-    result = "lose";
+    if ((userChoice === "rock" && compChoice === "scissor") || (userChoice === "paper" && compChoice === "rock") || (userChoice === "scissor" && compChoice === "paper")) {
+      userScore++;
+      result = "win";
+    } else if (userChoice == compChoice) {
+      result = "draw";
+    } else {
+      compScore++;
+      result = "lose";
+    }
+    updateScore();
+    announce(result, userChoice, compChoice);
   }
-  updateScore();
-  announce(result, userChoice, compChoice);
-  return result;
 }
 
+//to update and display current score
 function updateScore() {
   const uScore = document.querySelector(".uscore-value");
   uScore.textContent = userScore;
@@ -58,6 +67,18 @@ function updateScore() {
   cScore.textContent = compScore;
 }
 
+//announce and reset gameplay if user or comp reach 5 points
+function reset() {
+  if (userScore > compScore) {
+    announceWinner.textContent = "Game Over! You Won the Game";
+  } else {
+    announceWinner.textContent = "Game Over! You Lose the Game";
+  }
+
+  userScore = 0;
+  compScore = 0;
+}
+//announce win or lose result for each round
 function announce(string, userChoice, compChoice) {
   let result = "";
   if (string === "win") {
@@ -68,7 +89,6 @@ function announce(string, userChoice, compChoice) {
     result = "Draw";
   }
 
-  const announceWinner = document.querySelector("#announce");
   announceWinner.textContent = result;
 }
 
