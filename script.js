@@ -40,20 +40,20 @@ function playRound(userChoice) {
   let compChoice = getComputerChoice();
 
   let result;
+  if ((userChoice === "rock" && compChoice === "scissor") || (userChoice === "paper" && compChoice === "rock") || (userChoice === "scissor" && compChoice === "paper")) {
+    userScore++;
+    result = "win";
+  } else if (userChoice == compChoice) {
+    result = "draw";
+  } else {
+    compScore++;
+    result = "lose";
+  }
+  updateScore();
 
   if (compScore == 5 || userScore == 5) {
     reset();
   } else {
-    if ((userChoice === "rock" && compChoice === "scissor") || (userChoice === "paper" && compChoice === "rock") || (userChoice === "scissor" && compChoice === "paper")) {
-      userScore++;
-      result = "win";
-    } else if (userChoice == compChoice) {
-      result = "draw";
-    } else {
-      compScore++;
-      result = "lose";
-    }
-    updateScore();
     announce(result, userChoice, compChoice);
   }
 }
