@@ -1,5 +1,5 @@
-// the game is player agains computer
-// the game start with computer make a random string which is: rock, paper, or scissors and return it
+// the game is player against computer
+// the game start with computer make a random choice which is: rock, paper, or scissors and return it
 
 function getComputerChoice() {
   let choice = Math.floor(Math.random() * 3);
@@ -12,12 +12,65 @@ function getComputerChoice() {
   }
 }
 
-// the game then give user choice to select, which is: rock, paper, or scussors
-function getHumanChoice() {
-  return prompt("What is your choice? 'rock, paper, or scissor'");
+// play 1 round, compare userchoice and compchoice and check
+// the result whether user win, lose or draw
+let rock = document.querySelector("#rock");
+rock.addEventListener("click", () => {
+  playRound("rock");
+});
+
+let paper = document.querySelector("#paper");
+paper.addEventListener("click", () => {
+  playRound("paper");
+});
+
+let scissor = document.querySelector("#scissor");
+scissor.addEventListener("click", () => {
+  playRound("scissor");
+});
+
+let userScore = 0;
+let compScore = 0;
+
+function playRound(userChoice) {
+  let compChoice = getComputerChoice();
+
+  let result;
+  if ((userChoice === "rock" && compChoice === "scissor") || (userChoice === "paper" && compChoice === "rock") || (userChoice === "scissor" && compChoice === "paper")) {
+    userScore++;
+    result = "win";
+  } else if (userChoice == compChoice) {
+    result = "draw";
+  } else {
+    compScore++;
+    result = "lose";
+  }
+  updateScore();
+  announce(result, userChoice, compChoice);
+  return result;
 }
 
-// the game then compare user choice and computer random choice
+function updateScore() {
+  const uScore = document.querySelector(".uscore-value");
+  uScore.textContent = userScore;
+
+  const cScore = document.querySelector(".cscore-value");
+  cScore.textContent = compScore;
+}
+
+function announce(string, userChoice, compChoice) {
+  let result = "";
+  if (string === "win") {
+    result = "You win! " + capitalize(userChoice) + " beats " + capitalize(compChoice);
+  } else if (string === "lose") {
+    result = "You lose! " + capitalize(compChoice) + " beats " + capitalize(userChoice);
+  } else {
+    result = "Draw";
+  }
+
+  const announceWinner = document.querySelector("#announce");
+  announceWinner.textContent = result;
+}
 
 function capitalize(string) {
   let firstChar = string.charAt(0).toUpperCase();
@@ -25,74 +78,3 @@ function capitalize(string) {
 
   return firstChar + theRest;
 }
-
-function announceResult(string, humanChoice, computerChoice) {
-  if (string === "win") {
-    console.log("You win! " + capitalize(humanChoice) + " beats " + capitalize(computerChoice));
-  } else if (string === "lose") {
-    console.log("You lose! " + capitalize(computerChoice) + " beats " + capitalize(humanChoice));
-  } else {
-    console.log("Draw");
-  }
-}
-
-// mark the score and keep it tracked whether user win or computer win
-
-// announce whether user win or lose
-
-function playGame() {
-  let humanScore = 0;
-  let computerScore = 0;
-
-  function playRound(humanChoice, computerChoice) {
-    humanChoice = getHumanChoice().toLowerCase();
-    computerChoice = getComputerChoice();
-    let result;
-
-    if (humanChoice === "rock") {
-      if (computerChoice === "scissor") {
-        result = "win";
-        humanScore = humanScore + 1;
-      } else if (computerChoice === "paper") {
-        result = "lose";
-        computerScore = computerScore + 1;
-      } else {
-        result = "draw";
-      }
-    } else if (humanChoice === "paper") {
-      if (computerChoice === "rock") {
-        result = "win";
-        humanScore = humanScore + 1;
-      } else if (computerChoice === "scissor") {
-        result = "lose";
-        computerScore = computerScore + 1;
-      } else {
-        result = "draw";
-      }
-    } else {
-      if (computerChoice === "paper") {
-        result = "win";
-        humanScore = humanScore + 1;
-      } else if (computerChoice === "rock") {
-        result = "lose";
-        computerScore = computerScore + 1;
-      } else {
-        result = "draw";
-      }
-    }
-
-    return announceResult(result, humanChoice, computerChoice);
-  }
-
-  for (let i = 0; i < 5; i++) {
-    playRound();
-  }
-
-  if (humanScore > computerScore) {
-    console.log("The winner is Human Player with total score of " + humanScore);
-  } else {
-    console.log("The winner is Computer Player with total score of " + computerScore);
-  }
-}
-
-playGame();
